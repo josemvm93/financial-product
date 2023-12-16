@@ -20,7 +20,6 @@ const routes: Routes = [
           ).then((m) => m.FinancialProductComponent),
       },
     ],
-    runGuardsAndResolvers: 'always',
   },
 ];
 

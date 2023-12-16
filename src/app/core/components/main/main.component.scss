@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  justify-content: center;
+
+  &__container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+}
