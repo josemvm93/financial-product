@@ -1,1 +1,6 @@
-<p>financial-product works!</p>
+<app-input-text />
+
+<app-table
+  [data]="financialProducts$ | async"
+  [columnConfig]="tableColumnConfig"
+/>
