@@ -37,4 +37,10 @@ export interface FinancialProduct {
    * @type {Date}
    */
   date_release: Date;
+  /**
+   * Date to revision the product
+   *
+   * @type {Date}
+   */
+  date_revision?: Date;
 }
