@@ -16,8 +16,8 @@ const routes: Routes = [
         path: 'financial-product',
         loadComponent: () =>
           import(
-            './windows/financial-product/financial-product.component'
-          ).then((m) => m.FinancialProductComponent),
+            './windows/financial-products/financial-products.component'
+          ).then((m) => m.FinancialProductsComponent),
       },
     ],
   },

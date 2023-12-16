@@ -19,10 +19,10 @@ import { map } from 'rxjs/operators';
     InputTextComponent,
     ReactiveFormsModule,
   ],
-  templateUrl: './financial-product.component.html',
-  styleUrls: ['./financial-product.component.scss'],
+  templateUrl: './financial-products.component.html',
+  styleUrls: ['./financial-products.component.scss'],
 })
-export class FinancialProductComponent implements OnDestroy {
+export class FinancialProductsComponent implements OnDestroy {
   /**
    * Table Column config
    *
