@@ -2,12 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environmet } from '@env/environment';
 import { FinancialProduct } from '@models/financial-product.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FinancialProductService {
+  /**
+   * Products BehaviorSubject
+   *
+   * @private
+   * @type {BehaviorSubject<FinancialProduct[]>}
+   */
+  private productsSub = new BehaviorSubject<FinancialProduct[]>([]);
   /**
    * Api URL
    *
@@ -23,12 +30,25 @@ export class FinancialProductService {
    */
   constructor(private httpClient: HttpClient) {}
   /**
-   * Description placeholder
-   * @date 12/16/2023 - 1:10:57 PM
+   * Get prodcuts
+   *
+   * @readonly
+   * @type {Observable<FinancialProduct[]>}
+   */
+  get products$(): Observable<FinancialProduct[]> {
+    return this.productsSub.asObservable();
+  }
+  /**
+   * Get products form service
    *
    * @returns {Observable<FinancialProduct[]>}
    */
   getFinancialProducts(): Observable<FinancialProduct[]> {
-    return this.httpClient.get<FinancialProduct[]>(this.apiUrl);
+    return this.httpClient.get<FinancialProduct[]>(this.apiUrl).pipe(
+      tap({
+        next: (products) => this.productsSub.next(products),
+        error: () => this.productsSub.next([]),
+      })
+    );
   }
 }
