@@ -1,11 +1,11 @@
 {
-  "/financial-product/*": {
-    "target": "https://tribu-ti-staffing-desarrollo-afangwbmcrhucqfh.z01.azurefd.net/ipf-msa-productosfinancieros",
+  "/financial-product": {
+    "target": "https://tribu-ti-staffing-desarrollo-afangwbmcrhucqfh.z01.azurefd.net",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/financial-product": ""
+      "^/financial-product": "/ipf-msa-productosfinancieros"
     }
   }
 }
