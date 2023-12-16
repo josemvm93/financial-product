@@ -1,1 +1,24 @@
-<p>table works!</p>
+<div>
+  <table>
+    <tr>
+      <th *ngFor="let config of columnConfig; trackBy: trackById">
+        {{ config.columnName }}
+      </th>
+    </tr>
+    <tr *ngFor="let row of data; trackBy: trackById">
+      <td *ngFor="let config of columnConfig; trackBy: trackById">
+        <ng-container *ngIf="row[config.key]">
+          <div [ngSwitch]="config.columnType">
+            <ng-container *ngSwitchCase="'img'">
+              <img [src]="row[config.key]" alt="img" />
+            </ng-container>
+
+            <ng-container *ngSwitchDefault>
+              {{ row[config.key] }}
+            </ng-container>
+          </div>
+        </ng-container>
+      </td>
+    </tr>
+  </table>
+</div>
