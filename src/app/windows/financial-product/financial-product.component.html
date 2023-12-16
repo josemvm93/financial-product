@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="search">
+    <app-input-text />
+  </div>
+
+  <div class="table">
+    <app-table
+      [data]="financialProducts$ | async"
+      [columnConfig]="tableColumnConfig"
+    />
+  </div>
+</div>
