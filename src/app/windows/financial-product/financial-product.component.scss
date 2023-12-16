@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  .search {
+    margin: 20px 0;
+  }
+
+  .table {
+    background-color: #ffffff;
+    padding: 50px;
+  }
+}
