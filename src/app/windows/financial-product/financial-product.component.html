@@ -220,6 +220,7 @@
     <div class="button button__container">
       <app-button
         (clicked)="sendForm()"
+        [disabled]="!isFormValid"
         text="Enviar"
         ariaLabel="Enviar"
         variant="primary"

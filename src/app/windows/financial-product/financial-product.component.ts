@@ -6,7 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FinancialProduct } from '@core/models/financial-product.model';
 import { FinancialProductService } from '@core/services/financial-product.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
@@ -20,6 +21,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
+import { LoadingService } from './../../core/services/loading.service';
 
 @Component({
   selector: 'app-financial-product',
@@ -50,7 +52,9 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private productService: FinancialProductService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private loadingService: LoadingService,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -64,6 +68,15 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
   }
   get dateRevisonControl(): FormControl {
     return this.form.get('date_revision') as FormControl;
+  }
+  /**
+   * Is form valid
+   *
+   * @readonly
+   * @type {boolean}
+   */
+  get isFormValid(): boolean {
+    return this.form.valid;
   }
   createForm(): void {
     this.form = new FormGroup({
@@ -161,9 +174,31 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
   }
 
   sendForm(): void {
-    if (this.form.valid) {
-      // TODO: send data
+    if (this.isFormValid) {
+      this.loadingService.loading = true;
+      const product: FinancialProduct = this.form.value;
+      product.date_revision = this.dateRevisonControl.value;
+      this.productService
+        .createProduct(product)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.loadingService.loading = false;
+            this.redirectTo();
+          },
+          error: () => {
+            this.loadingService.loading = false;
+          },
+        });
     }
+  }
+
+  /**
+   * Redirect to
+   */
+  redirectTo(): void {
+    this.router.navigate(['/financial-products/']);
+    // this.router.navigate(['product'], { relativeTo: this.route });
   }
 
   onBlurId(): void {
