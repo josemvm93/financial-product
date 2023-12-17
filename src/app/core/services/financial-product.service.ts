@@ -73,4 +73,13 @@ export class FinancialProductService {
   createProduct(product: FinancialProduct): Observable<FinancialProduct> {
     return this.httpClient.post<FinancialProduct>(this.apiUrl, product);
   }
+  /**
+   * Update product
+   *
+   * @param {FinancialProduct} product Product
+   * @returns {Observable<FinancialProduct>}
+   */
+  updateProduct(product: FinancialProduct): Observable<FinancialProduct> {
+    return this.httpClient.put<FinancialProduct>(this.apiUrl, product);
+  }
 }

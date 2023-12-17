@@ -6,7 +6,10 @@ import { FinancialProductService } from '@core/services/financial-product.servic
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { TableComponent } from '@shared/components/table/table.component';
-import { TableColumnConfig } from '@shared/components/table/table.model';
+import {
+  TableClickAction,
+  TableConfig,
+} from '@shared/components/table/table.model';
 import { CommonUtils } from '@shared/utils/common-utils';
 import { Observable, Subject } from 'rxjs';
 import {
@@ -35,9 +38,9 @@ export class FinancialProductsComponent implements OnDestroy {
   /**
    * Table Column config
    *
-   * @type {TableColumnConfig<FinancialProduct>[]}
+   * @type {TableConfig<FinancialProduct>[]}
    */
-  tableColumnConfig: TableColumnConfig<FinancialProduct>[] = [];
+  tableConfig!: TableConfig<FinancialProduct>;
   /**
    * Financial Products
    *
@@ -156,26 +159,53 @@ export class FinancialProductsComponent implements OnDestroy {
    * @private
    */
   private initTableConfig(): void {
-    this.tableColumnConfig = [
-      { key: 'logo', columnName: 'Logo', columnType: 'img' },
-      { key: 'name', columnName: 'Descripción', columnType: 'string' },
-      { key: 'description', columnName: 'Descripción', columnType: 'string' },
-      {
-        key: 'date_release',
-        columnName: 'Fecha de liberación',
-        columnType: 'date',
-      },
-      {
-        key: 'date_revision',
-        columnName: 'Fecha de reestructuración',
-        columnType: 'date',
-      },
-    ];
+    this.tableConfig = {
+      columns: [
+        { key: 'logo', columnName: 'Logo', columnType: 'img' },
+        { key: 'name', columnName: 'Descripción', columnType: 'string' },
+        { key: 'description', columnName: 'Descripción', columnType: 'string' },
+        {
+          key: 'date_release',
+          columnName: 'Fecha de liberación',
+          columnType: 'date',
+        },
+        {
+          key: 'date_revision',
+          columnName: 'Fecha de reestructuración',
+          columnType: 'date',
+        },
+      ],
+      actions: [
+        {
+          type: 'edit',
+          name: 'Editar',
+        },
+        {
+          type: 'delete',
+          name: 'Eliminar',
+        },
+      ],
+    };
   }
   /**
    * Redirect to
    */
-  redirectTo(): void {
-    this.router.navigate(['/financial-products/product']);
+  redirectTo(id?: string): void {
+    if (id) {
+      this.router.navigate(['/financial-products/product', id]);
+    } else {
+      this.router.navigate(['/financial-products/product']);
+    }
+  }
+  /**
+   * On click action
+   *
+   * @param {TableClickAction<FinancialProduct>} clickAction
+   */
+  onClickAction({ action, item }: TableClickAction<FinancialProduct>): void {
+    if (action.type === 'edit') {
+      this.redirectTo(item.id);
+    } else {
+    }
   }
 }
