@@ -1,12 +1,9 @@
 <div class="container">
   <div class="container__row">
     <div class="search">
-      <app-input
-        label="Search"
-        (inputChange)="onInputChange($event)"
-        (inputChangeToSearch)="searchProduct($event)"
-        [minLength]="minLengthToSearch"
-      />
+      <form [formGroup]="form">
+        <app-input formControlName="search" label="Search" />
+      </form>
       <p class="helper helper__error">
         <span *ngIf="messageExists">{{ message }}</span>
       </p>

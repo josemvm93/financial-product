@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FinancialProductService } from '@core/services/financial-product.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
@@ -9,7 +9,12 @@ import { TableComponent } from '@shared/components/table/table.component';
 import { TableColumnConfig } from '@shared/components/table/table.model';
 import { CommonUtils } from '@shared/utils/common-utils';
 import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  takeUntil,
+} from 'rxjs/operators';
 import { FinancialProduct } from './../../core/models/financial-product.model';
 
 @Component({
@@ -38,13 +43,13 @@ export class FinancialProductsComponent implements OnDestroy {
    *
    * @type {Observable<FinancialProduct[]>}
    */
-  financialProducts$: Observable<FinancialProduct[]>;
+  financialProducts$!: Observable<FinancialProduct[]>;
   /**
    * Min length to search
    *
    * @type {number}
    */
-  minLengthToSearch = 3;
+  minLengthToSearch = 0;
   /**
    * Message
    *
@@ -58,6 +63,14 @@ export class FinancialProductsComponent implements OnDestroy {
    */
   private destroy$ = new Subject();
   /**
+   * Form
+   *
+   * @type {FormGroup}
+   */
+  form = new FormGroup({
+    search: new FormControl<string>(''),
+  });
+  /**
    * Creates an instance of FinancialProductComponent.
    *
    * @constructor
@@ -69,8 +82,8 @@ export class FinancialProductsComponent implements OnDestroy {
     private router: Router
   ) {
     this.initTableConfig();
-    this.financialProducts$ =
-      this.financialProductService.getFinancialProducts();
+    this.getProducts();
+    this.onSearchChange();
   }
   /**
    * Message exists ?
@@ -87,6 +100,28 @@ export class FinancialProductsComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+  /**
+   * Get products
+   */
+  getProducts(): void {
+    this.financialProductService
+      .getFinancialProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+  }
+  /**
+   * On search change
+   */
+  onSearchChange(): void {
+    this.form
+      .get('search')
+      ?.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((v) => this.searchProduct(v ?? ''));
   }
   /**
    * Search product
