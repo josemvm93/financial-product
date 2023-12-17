@@ -1,1 +1,12 @@
-<p>button works!</p>
+<button
+  (click)="handleClick()"
+  [attr.name]="name"
+  [attr.type]="type"
+  [attr.aria-label]="ariaLabel"
+  [attr.aria-labelledby]="ariaLabelledBy"
+  class="button"
+  [ngClass]="getVariantClass()"
+  [disabled]="disabled"
+>
+  {{ text }}
+</button>
