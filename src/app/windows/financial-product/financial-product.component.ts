@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -7,23 +7,39 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { FinancialProductService } from '@core/services/financial-product.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
+import { CommonUtils } from '@shared/utils/common-utils';
 import { DateValidator } from '@shared/validators/date.validator';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  of,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-financial-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, ButtonComponent],
   templateUrl: './financial-product.component.html',
   styleUrls: ['./financial-product.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, ButtonComponent],
+  providers: [DatePipe],
 })
 export class FinancialProductComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+  form!: FormGroup;
   title = 'Formulario de Registro';
   type!: 'edit' | 'add';
-
+  /**
+   * Calendar Format
+   *
+   * @readonly
+   * @type {"dd/MM/yyyy"}
+   */
+  readonly calendarFormat = 'dd/MM/yyyy';
   /**
    * Destroy subject
    *
@@ -31,12 +47,31 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
    */
   private destroy$ = new Subject();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private productService: FinancialProductService,
+    private datePipe: DatePipe
+  ) {
+    this.createForm();
+  }
+
+  get idControl(): FormControl {
+    return this.form.get('id') as FormControl;
+  }
+
+  get dateReleaseControl(): FormControl {
+    return this.form.get('date_release') as FormControl;
+  }
+  get dateRevisonControl(): FormControl {
+    return this.form.get('date_revision') as FormControl;
+  }
+  createForm(): void {
     this.form = new FormGroup({
       id: new FormControl<string>('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(10),
+        // ProductValidator.validateId(productService),
       ]),
       name: new FormControl<string>('', [
         Validators.required,
@@ -53,12 +88,50 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
         Validators.required,
         DateValidator.rangeDate(new Date()),
       ]),
-      date_revision: new FormControl<Date | null>(null, [Validators.required]),
+      date_revision: new FormControl<Date | null>(
+        { value: null, disabled: true },
+        [Validators.required]
+      ),
     });
+    this.verifyIDControl();
+    this.verifyDateRelease();
+  }
 
-    this.form
-      .get('id')
-      ?.statusChanges.subscribe((t) => console.log('status ', t));
+  verifyIDControl(): void {
+    this.idControl?.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((idValue) => {
+          let result = of(false);
+          if (this.idControl?.valid) {
+            result = this.productService.verifyProductId(idValue);
+          }
+          return result;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((exists) => {
+        if (exists) {
+          this.idControl?.setErrors({ validateId: true });
+        }
+      });
+  }
+
+  verifyDateRelease(): void {
+    this.dateReleaseControl?.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((dateRelease: Date) => {
+        const date = new Date(dateRelease);
+        if (!isNaN(date?.getTime())) {
+          this.dateRevisonControl?.setValue(
+            this.datePipe.transform(
+              CommonUtils.addYearsToDate(date),
+              'yyyy-MM-dd'
+            )
+          );
+        }
+      });
   }
 
   ngOnInit() {
@@ -91,5 +164,11 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       // TODO: send data
     }
+  }
+
+  onBlurId(): void {
+    // this.productService
+    //   .verifyProductId(idValue)
+    //   .subscribe((t) => console.log('subss  ', t));
   }
 }

@@ -5,7 +5,7 @@
   <form [formGroup]="form" class="form">
     <div class="flex-row__container">
       <div class="flex-row__item--half">
-        <app-input label="ID" formControlName="id" />
+        <app-input label="ID" formControlName="id" (onBlur)="onBlurId()" />
         <div
           class="helper__container"
           *ngIf="form.get('id')?.errors && form.get('id')?.['dirty'] || (form.get('id')?.['touched']) "
@@ -40,6 +40,14 @@
                   form.get("id")?.getError("maxlength")?.requiredLength +
                   " carácteres"
               }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('id')?.hasError('validateId')"
+          >
+            <small>
+              {{ "ID no válido" }}
             </small>
           </div>
         </div>
@@ -162,6 +170,18 @@
           >
             <small>
               {{ "Campo requerido" }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('date_release')?.hasError('minDate')"
+          >
+            <small>
+              {{
+                "Fecha mínima requerida " +
+                  (form.get("date_release")?.getError("minDate")
+                    | date : calendarFormat)
+              }}
             </small>
           </div>
         </div>
