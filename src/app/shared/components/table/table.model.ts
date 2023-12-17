@@ -4,7 +4,7 @@
  * @export
  * @typedef {TableColumnType}
  */
-export type TableColumnType = 'img' | 'string';
+export type TableColumnType = 'img' | 'string' | 'date';
 /**
  * Table column config
  *

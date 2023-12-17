@@ -10,9 +10,11 @@
         <ng-container *ngIf="row[config.key]">
           <div [ngSwitch]="config.columnType">
             <ng-container *ngSwitchCase="'img'">
-              <img [src]="row[config.key]" alt="img" />
+              <img class="image" [src]="row[config.key]" alt="img" />
             </ng-container>
-
+            <ng-container *ngSwitchCase="'date'">
+              {{ getDate(row[config.key]) | date : "dd/MM/yyyy" }}
+            </ng-container>
             <ng-container *ngSwitchDefault>
               {{ row[config.key] }}
             </ng-container>

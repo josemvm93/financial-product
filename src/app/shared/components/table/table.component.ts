@@ -29,4 +29,13 @@ export class TableComponent<T> {
    * @type {*}
    */
   trackById = CommonUtils.trackById;
+  /**
+   * Get date
+   *
+   * @param {*} v Value
+   * @returns {Date} Date
+   */
+  getDate(v: any): Date {
+    return new Date(v);
+  }
 }

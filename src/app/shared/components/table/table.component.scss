@@ -12,5 +12,12 @@ table {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+
+    .image {
+      max-width: 50px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
   }
 }
