@@ -21,7 +21,8 @@
   <div class="table">
     <app-table
       [data]="financialProducts$ | async"
-      [columnConfig]="tableColumnConfig"
+      [config]="tableConfig"
+      (clickAction)="onClickAction($event)"
     />
   </div>
 </div>
