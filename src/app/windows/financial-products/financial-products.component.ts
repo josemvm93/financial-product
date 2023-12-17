@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FinancialProduct } from '@core/models/financial-product.model';
 import { FinancialProductService } from '@core/services/financial-product.service';
-import { InputTextComponent } from '@shared/components/input-text/input-text.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { InputComponent } from '@shared/components/input/input.component';
 import { TableComponent } from '@shared/components/table/table.component';
 import { TableColumnConfig } from '@shared/components/table/table.model';
 import { CommonUtils } from '@shared/utils/common-utils';
@@ -14,9 +16,10 @@ import { map } from 'rxjs/operators';
   selector: 'app-financial-product',
   standalone: true,
   imports: [
+    ButtonComponent,
     CommonModule,
     TableComponent,
-    InputTextComponent,
+    InputComponent,
     ReactiveFormsModule,
   ],
   templateUrl: './financial-products.component.html',
@@ -58,8 +61,13 @@ export class FinancialProductsComponent implements OnDestroy {
    *
    * @constructor
    * @param {FinancialProductService} financialProductService FinancialProductService
+   * @param {Router} router Router
    */
-  constructor(private financialProductService: FinancialProductService) {
+  constructor(
+    private financialProductService: FinancialProductService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.initTableConfig();
     this.financialProducts$ =
       this.financialProductService.getFinancialProducts();
@@ -128,5 +136,12 @@ export class FinancialProductsComponent implements OnDestroy {
         columnType: 'string',
       },
     ];
+  }
+  /**
+   * Redirect to
+   */
+  redirectTo(): void {
+    this.router.navigate(['/financial-products/product']);
+    // this.router.navigate(['product'], { relativeTo: this.route });
   }
 }
