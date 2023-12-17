@@ -22,5 +22,10 @@
         </ng-container>
       </td>
     </tr>
+    <tr *ngIf="!data || data?.length === 0">
+      <td class="empty">
+        {{ emptyMessage }}
+      </td>
+    </tr>
   </table>
 </div>

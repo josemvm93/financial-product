@@ -23,6 +23,7 @@ export class TableComponent<T> {
    * @type {!TableColumnConfig<T>[]}
    */
   @Input() columnConfig!: TableColumnConfig<T>[];
+  @Input() emptyMessage = 'No hay resultados';
   /**
    * Track function
    *
