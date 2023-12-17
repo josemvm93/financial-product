@@ -4,6 +4,7 @@
     [type]="type"
     placeholder="   "
     (input)="onInputChange($event)"
+    (blur)="onInputBlur()"
     [attr.aria-labelledby]="label"
     [attr.aria-label]="label"
   />

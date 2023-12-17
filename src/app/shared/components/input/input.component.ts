@@ -57,6 +57,12 @@ export class InputComponent {
    */
   @Output() inputChange = new EventEmitter<string>();
   /**
+   * On blur
+   *
+   * @type {EventEmitter<string>}
+   */
+  @Output() onBlur = new EventEmitter<boolean>();
+  /**
    * Accessor Directive
    *
    * @type {*}
@@ -95,6 +101,12 @@ export class InputComponent {
     const inputValue = (event.target as HTMLInputElement).value;
     this.inputChange.next(inputValue);
     this.value$.next(inputValue);
-    this.controlDirective.onChange(inputValue);
+    this.controlDirective.control.setValue(inputValue);
+  }
+  /**
+   * On input blur
+   */
+  onInputBlur(): void {
+    this.onBlur.next(true);
   }
 }

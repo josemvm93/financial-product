@@ -69,10 +69,10 @@ export class BaseControlDirective
   /**
    * Write value
    *
-   * @param {*} value Value
+   * @param {*} _value Value
    */
-  writeValue(value: any) {
-    this.control.setValue(value);
+  writeValue(_value: any) {
+    // this.control.setValue(value);
   }
   /**
    * Register on change
