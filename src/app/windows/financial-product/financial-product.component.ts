@@ -48,7 +48,31 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
    * @type {Subject}
    */
   private destroy$ = new Subject();
+  /**
+   * product selected
+   *
+   * @private
+   * @type {!FinancialProduct}
+   */
+  private productSelected!: FinancialProduct | undefined;
+  /**
+   * product id
+   *
+   * @private
+   * @type {!string}
+   */
+  private productId!: string;
 
+  /**
+   * Creates an instance of FinancialProductComponent.
+   *
+   * @constructor
+   * @param {ActivatedRoute} route
+   * @param {FinancialProductService} productService
+   * @param {DatePipe} datePipe
+   * @param {LoadingService} loadingService
+   * @param {Router} router
+   */
   constructor(
     private route: ActivatedRoute,
     private productService: FinancialProductService,
@@ -148,10 +172,26 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      const id = +params['id'];
-      this.type = id ? 'edit' : 'add';
-    });
+    this.route.params
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((params) => {
+          this.productId = params['id'];
+          this.type = this.productId ? 'edit' : 'add';
+          if (this.type === 'edit') {
+            this.idControl.disable();
+          }
+          return this.productService.products$;
+        })
+      )
+      .subscribe((products) => {
+        this.productSelected = products.find(
+          (product) => product.id === this.productId
+        );
+        if (this.productSelected) {
+          this.form.setValue(this.productSelected);
+        }
+      });
   }
 
   /**
@@ -178,19 +218,51 @@ export class FinancialProductComponent implements OnInit, OnDestroy {
       this.loadingService.loading = true;
       const product: FinancialProduct = this.form.value;
       product.date_revision = this.dateRevisonControl.value;
-      this.productService
-        .createProduct(product)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.loadingService.loading = false;
-            this.redirectTo();
-          },
-          error: () => {
-            this.loadingService.loading = false;
-          },
-        });
+      if (this.type === 'edit') {
+        this.editProduct(product);
+      } else {
+        this.createProduct(product);
+      }
     }
+  }
+  /**
+   * Create product
+   *
+   * @param {FinancialProduct} product
+   */
+  createProduct(product: FinancialProduct): void {
+    this.productService
+      .createProduct(product)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadingService.loading = false;
+          this.redirectTo();
+        },
+        error: () => {
+          this.loadingService.loading = false;
+        },
+      });
+  }
+  /**
+   * Edit product
+   *
+   * @param {FinancialProduct} product
+   */
+  editProduct(product: FinancialProduct): void {
+    product.id = this.idControl.value;
+    this.productService
+      .updateProduct(product)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadingService.loading = false;
+          this.redirectTo();
+        },
+        error: () => {
+          this.loadingService.loading = false;
+        },
+      });
   }
 
   /**

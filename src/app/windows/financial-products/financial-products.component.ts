@@ -190,11 +190,22 @@ export class FinancialProductsComponent implements OnDestroy {
   /**
    * Redirect to
    */
-  redirectTo(): void {
-    this.router.navigate(['/financial-products/product']);
+  redirectTo(id?: string): void {
+    if (id) {
+      this.router.navigate(['/financial-products/product', id]);
+    } else {
+      this.router.navigate(['/financial-products/product']);
+    }
   }
-
-  onClickAction(clickAction: TableClickAction<FinancialProduct>): void {
-    console.log('acttt ', clickAction);
+  /**
+   * On click action
+   *
+   * @param {TableClickAction<FinancialProduct>} clickAction
+   */
+  onClickAction({ action, item }: TableClickAction<FinancialProduct>): void {
+    if (action.type === 'edit') {
+      this.redirectTo(item.id);
+    } else {
+    }
   }
 }
