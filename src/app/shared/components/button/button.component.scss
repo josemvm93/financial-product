@@ -14,13 +14,29 @@
   cursor: pointer;
   z-index: 0;
 
+  &[disabled] {
+    cursor: default;
+
+    &::before {
+      content: none;
+    }
+  }
+
   &--primary {
     background-color: #f5e518;
     color: #09519d;
+    &[disabled] {
+      background-color: #dcdcdc;
+      color: #525252;
+    }
   }
 
   &--secondary {
     background-color: #dcddde;
     color: #09519d;
+    &[disabled] {
+      background-color: #dcdcdc;
+      color: #525252;
+    }
   }
 }
