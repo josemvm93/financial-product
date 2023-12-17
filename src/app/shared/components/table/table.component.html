@@ -1,24 +1,35 @@
 <div>
   <table>
     <tr>
-      <th *ngFor="let config of columnConfig; trackBy: trackById">
+      <th *ngFor="let config of config.columns; trackBy: trackById">
         {{ config.columnName }}
       </th>
     </tr>
-    <tr *ngFor="let row of data; trackBy: trackById">
-      <td *ngFor="let config of columnConfig; trackBy: trackById">
-        <ng-container *ngIf="row[config.key]">
-          <div [ngSwitch]="config.columnType">
+    <tr *ngFor="let item of data; trackBy: trackById">
+      <td *ngFor="let column of config.columns; trackBy: trackById">
+        <ng-container *ngIf="item[column.key]">
+          <div [ngSwitch]="column.columnType">
             <ng-container *ngSwitchCase="'img'">
-              <img class="image" [src]="row[config.key]" alt="img" />
+              <img class="image" [src]="item[column.key]" alt="img" />
             </ng-container>
             <ng-container *ngSwitchCase="'date'">
-              {{ getDate(row[config.key]) | date : "dd/MM/yyyy" }}
+              {{ getDate(item[column.key]) | date : "dd/MM/yyyy" }}
             </ng-container>
             <ng-container *ngSwitchDefault>
-              {{ row[config.key] }}
+              {{ item[column.key] }}
             </ng-container>
           </div>
+        </ng-container>
+      </td>
+      <td class="actions">
+        <ng-container *ngFor="let action of config.actions; trackBy: trackById">
+          <app-button
+            class="action__item"
+            (clicked)="onClickAction(action, item)"
+            [text]="action.name"
+            [ariaLabel]="action.name"
+            variant="secondary"
+          ></app-button>
         </ng-container>
       </td>
     </tr>

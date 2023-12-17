@@ -22,5 +22,13 @@ table {
     .empty {
       padding: 8px;
     }
+
+    &.actions {
+      display: flex;
+      flex-direction: column;
+      .action__item {
+        padding: 4px;
+      }
+    }
   }
 }
