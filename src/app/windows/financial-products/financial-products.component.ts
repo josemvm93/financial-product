@@ -3,6 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FinancialProductService } from '@core/services/financial-product.service';
+import { LoadingService } from '@core/services/loading.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { TableComponent } from '@shared/components/table/table.component';
@@ -82,7 +83,8 @@ export class FinancialProductsComponent implements OnDestroy {
    */
   constructor(
     private financialProductService: FinancialProductService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.initTableConfig();
     this.getProducts();
@@ -206,6 +208,25 @@ export class FinancialProductsComponent implements OnDestroy {
     if (action.type === 'edit') {
       this.redirectTo(item.id);
     } else {
+      this.deleteProduct(item);
     }
+  }
+  /**
+   * Delete product
+   *
+   * @param {FinancialProduct} product
+   */
+  deleteProduct(product: FinancialProduct): void {
+    this.loadingService.loading = true;
+    this.financialProductService
+      .deleteProduct(product.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadingService.loading = false;
+          this.financialProducts$ = this.financialProductService.products$;
+        },
+        error: () => (this.loadingService.loading = false),
+      });
   }
 }
