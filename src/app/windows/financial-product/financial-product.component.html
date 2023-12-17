@@ -1,1 +1,209 @@
-<p>financial-product works!</p>
+<div class="financial-product financial-product__container">
+  <h1>
+    <span>{{ title }}</span>
+  </h1>
+  <form [formGroup]="form" class="form">
+    <div class="flex-row__container">
+      <div class="flex-row__item--half">
+        <app-input label="ID" formControlName="id" />
+        <div
+          class="helper__container"
+          *ngIf="form.get('id')?.errors && form.get('id')?.['dirty'] || (form.get('id')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('id')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('id')?.hasError('minlength')"
+          >
+            <small>
+              {{
+                "Debe ingresar al menos " +
+                  form.get("id")?.getError("minlength")?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('id')?.hasError('maxlength')"
+          >
+            <small>
+              {{
+                "No debe superar los " +
+                  form.get("id")?.getError("maxlength")?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row__item--half">
+        <app-input label="Nombre" formControlName="name" />
+        <div
+          class="helper__container"
+          *ngIf="form.get('name')?.errors && form.get('name')?.['dirty'] || (form.get('name')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('name')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('name')?.hasError('minlength')"
+          >
+            <small>
+              {{
+                "Debe ingresar al menos " +
+                  form.get("name")?.getError("minlength")?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('name')?.hasError('maxlength')"
+          >
+            <small>
+              {{
+                "No debe superar los " +
+                  form.get("name")?.getError("maxlength")?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-row__container">
+      <div class="flex-row__item--half">
+        <app-input label="Descripción" formControlName="description" />
+        <div
+          class="helper__container"
+          *ngIf="form.get('description')?.errors && form.get('description')?.['dirty'] || (form.get('description')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('description')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('description')?.hasError('minlength')"
+          >
+            <small>
+              {{
+                "Debe ingresar al menos " +
+                  form.get("description")?.getError("minlength")
+                    ?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('description')?.hasError('maxlength')"
+          >
+            <small>
+              {{
+                "No debe superar los " +
+                  form.get("description")?.getError("maxlength")
+                    ?.requiredLength +
+                  " carácteres"
+              }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row__item--half">
+        <app-input label="Logo" formControlName="logo" />
+        <div
+          class="helper__container"
+          *ngIf="form.get('logo')?.errors && form.get('logo')?.['dirty'] || (form.get('logo')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('logo')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-row__container">
+      <div class="flex-row__item--half">
+        <app-input
+          label="Fecha Liberación"
+          type="date"
+          formControlName="date_release"
+        />
+        <div
+          class="helper__container"
+          *ngIf="form.get('date_release')?.errors && form.get('date_release')?.['dirty'] || (form.get('date_release')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('date_release')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row__item--half">
+        <app-input
+          type="date"
+          label="Fecha Revisión"
+          formControlName="date_revision"
+        />
+        <div
+          class="helper__container"
+          *ngIf="form.get('date_revision')?.errors && form.get('date_revision')?.['dirty'] || (form.get('date_revision')?.['touched']) "
+        >
+          <div
+            class="helper__item helper__error"
+            *ngIf="form.get('date_revision')?.hasError('required')"
+          >
+            <small>
+              {{ "Campo requerido" }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="buttons buttons__container">
+    <div class="button button__container">
+      <app-button
+        (clicked)="resetForm()"
+        text="Reiniciar"
+        ariaLabel="Reiniciar"
+        variant="secondary"
+      />
+    </div>
+    <div class="button button__container">
+      <app-button
+        (clicked)="sendForm()"
+        text="Enviar"
+        ariaLabel="Enviar"
+        variant="primary"
+      />
+    </div>
+  </div>
+</div>

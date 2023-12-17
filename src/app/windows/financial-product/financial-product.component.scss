@@ -1,0 +1,31 @@
+.financial-product {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    margin: 32px 0;
+  }
+  .buttons {
+    width: 50%;
+    margin: 32px;
+
+    &__container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .button {
+      &__container {
+        display: flex;
+      }
+      app-button {
+        flex: 1;
+      }
+    }
+  }
+}
