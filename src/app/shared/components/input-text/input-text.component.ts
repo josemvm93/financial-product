@@ -25,6 +25,12 @@ import {
 })
 export class InputTextComponent implements OnDestroy {
   /**
+   * Label
+   *
+   * @type {!string}
+   */
+  @Input() label!: string;
+  /**
    * Min length to release value
    *
    * @type {number}
