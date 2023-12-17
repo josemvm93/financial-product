@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="container__row">
+    <div class="search">
+      <form [formGroup]="form">
+        <app-input formControlName="search" label="Search" />
+      </form>
+      <p class="helper helper__error">
+        <span *ngIf="messageExists">{{ message }}</span>
+      </p>
+    </div>
+    <div class="add-product">
+      <app-button
+        (clicked)="redirectTo()"
+        text="Agregar"
+        ariaLabel="Agregar"
+        variant="primary"
+      />
+    </div>
+  </div>
+
+  <div class="table">
+    <app-table
+      [data]="financialProducts$ | async"
+      [columnConfig]="tableColumnConfig"
+    />
+  </div>
+</div>

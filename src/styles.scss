@@ -8,3 +8,16 @@ body {
     color: red;
   }
 }
+
+.flex-row {
+  &__container {
+    display: flex;
+    gap: 16px;
+  }
+  &__item {
+    &--half {
+      flex: 50%;
+      margin-bottom: 16px;
+    }
+  }
+}

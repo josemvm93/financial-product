@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environmet } from '@env/environment';
-import { FinancialProduct } from '@models/financial-product.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { FinancialProduct } from './../models/financial-product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -50,5 +50,27 @@ export class FinancialProductService {
         error: () => this.productsSub.next([]),
       })
     );
+  }
+
+  /**
+   * Verify product id
+   *
+   * @param {string} id Id
+   * @returns {Observable<boolean>} Observable
+   */
+  verifyProductId(id: string): Observable<boolean> {
+    const params = new HttpParams().set('id', id);
+    return this.httpClient.get<boolean>(this.apiUrl + '/verification', {
+      params,
+    });
+  }
+  /**
+   * Create product
+   *
+   * @param {FinancialProduct} product Product
+   * @returns {Observable<FinancialProduct>} Observable
+   */
+  createProduct(product: FinancialProduct): Observable<FinancialProduct> {
+    return this.httpClient.post<FinancialProduct>(this.apiUrl, product);
   }
 }

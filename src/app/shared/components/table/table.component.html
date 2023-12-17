@@ -10,14 +10,21 @@
         <ng-container *ngIf="row[config.key]">
           <div [ngSwitch]="config.columnType">
             <ng-container *ngSwitchCase="'img'">
-              <img [src]="row[config.key]" alt="img" />
+              <img class="image" [src]="row[config.key]" alt="img" />
             </ng-container>
-
+            <ng-container *ngSwitchCase="'date'">
+              {{ getDate(row[config.key]) | date : "dd/MM/yyyy" }}
+            </ng-container>
             <ng-container *ngSwitchDefault>
               {{ row[config.key] }}
             </ng-container>
           </div>
         </ng-container>
+      </td>
+    </tr>
+    <tr *ngIf="!data || data?.length === 0">
+      <td class="empty">
+        {{ emptyMessage }}
       </td>
     </tr>
   </table>

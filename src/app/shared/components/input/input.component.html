@@ -1,0 +1,18 @@
+<div class="input__container">
+  <input
+    [formControl]="controlDirective.control"
+    [type]="type"
+    placeholder="   "
+    (blur)="onInputBlur()"
+    [attr.aria-labelledby]="label"
+    [attr.aria-label]="label"
+  />
+  <label
+    [ngClass]="{
+      'color-invalid': controlDirective.control.dirty && controlDirective.control.invalid,
+    }"
+    htmlFor="input"
+    [for]="label"
+    >{{ label }}{{ controlDirective.isRequired ? " *" : "" }}</label
+  >
+</div>

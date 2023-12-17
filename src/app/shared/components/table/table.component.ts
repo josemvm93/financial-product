@@ -23,10 +23,20 @@ export class TableComponent<T> {
    * @type {!TableColumnConfig<T>[]}
    */
   @Input() columnConfig!: TableColumnConfig<T>[];
+  @Input() emptyMessage = 'No hay resultados';
   /**
    * Track function
    *
    * @type {*}
    */
   trackById = CommonUtils.trackById;
+  /**
+   * Get date
+   *
+   * @param {*} v Value
+   * @returns {Date} Date
+   */
+  getDate(v: any): Date {
+    return new Date(v);
+  }
 }
