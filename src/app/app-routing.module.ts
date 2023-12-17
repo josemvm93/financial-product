@@ -10,14 +10,33 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'financial-product',
+        redirectTo: 'financial-products',
       },
       {
-        path: 'financial-product',
-        loadComponent: () =>
-          import(
-            './windows/financial-products/financial-products.component'
-          ).then((m) => m.FinancialProductsComponent),
+        path: 'financial-products',
+        children: [
+          {
+            path: 'product/:id',
+            loadComponent: () =>
+              import(
+                './windows/financial-product/financial-product.component'
+              ).then((m) => m.FinancialProductComponent),
+          },
+          {
+            path: 'product',
+            loadComponent: () =>
+              import(
+                './windows/financial-product/financial-product.component'
+              ).then((m) => m.FinancialProductComponent),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './windows/financial-products/financial-products.component'
+              ).then((m) => m.FinancialProductsComponent),
+          },
+        ],
       },
     ],
   },

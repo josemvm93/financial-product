@@ -1,8 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FinancialProduct } from '@core/models/financial-product.model';
+import { Router } from '@angular/router';
 import { FinancialProductService } from '@core/services/financial-product.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
@@ -11,10 +10,13 @@ import { TableColumnConfig } from '@shared/components/table/table.model';
 import { CommonUtils } from '@shared/utils/common-utils';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FinancialProduct } from './../../core/models/financial-product.model';
 
 @Component({
   selector: 'app-financial-product',
   standalone: true,
+  templateUrl: './financial-products.component.html',
+  styleUrls: ['./financial-products.component.scss'],
   imports: [
     ButtonComponent,
     CommonModule,
@@ -22,8 +24,7 @@ import { map } from 'rxjs/operators';
     InputComponent,
     ReactiveFormsModule,
   ],
-  templateUrl: './financial-products.component.html',
-  styleUrls: ['./financial-products.component.scss'],
+  providers: [DatePipe],
 })
 export class FinancialProductsComponent implements OnDestroy {
   /**
@@ -65,7 +66,6 @@ export class FinancialProductsComponent implements OnDestroy {
    */
   constructor(
     private financialProductService: FinancialProductService,
-    private route: ActivatedRoute,
     private router: Router
   ) {
     this.initTableConfig();
@@ -128,12 +128,12 @@ export class FinancialProductsComponent implements OnDestroy {
       {
         key: 'date_release',
         columnName: 'Fecha de liberación',
-        columnType: 'string',
+        columnType: 'date',
       },
       {
         key: 'date_revision',
         columnName: 'Fecha de reestructuración',
-        columnType: 'string',
+        columnType: 'date',
       },
     ];
   }
@@ -142,6 +142,5 @@ export class FinancialProductsComponent implements OnDestroy {
    */
   redirectTo(): void {
     this.router.navigate(['/financial-products/product']);
-    // this.router.navigate(['product'], { relativeTo: this.route });
   }
 }
