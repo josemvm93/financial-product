@@ -82,4 +82,26 @@ export class FinancialProductService {
   updateProduct(product: FinancialProduct): Observable<FinancialProduct> {
     return this.httpClient.put<FinancialProduct>(this.apiUrl, product);
   }
+  /**
+   * Delete product
+   *
+   * @param {string} id id
+   * @returns {Observable<string>}
+   */
+  deleteProduct(id: string): Observable<string> {
+    const params = new HttpParams().set('id', id);
+    return this.httpClient
+      .delete<string>(this.apiUrl, {
+        params,
+      })
+      .pipe(
+        tap({
+          next: () =>
+            this.productsSub.next(
+              this.productsSub.value.filter((product) => product.id !== id)
+            ),
+          error: () => this.productsSub.next([]),
+        })
+      );
+  }
 }
