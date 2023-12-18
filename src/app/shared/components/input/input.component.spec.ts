@@ -21,4 +21,8 @@ describe('InputTextComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should emit onBlur value', () => {
+    component.onInputBlur();
+    expect(component.onBlur).toHaveBeenCalled();
+  });
 });
