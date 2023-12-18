@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormGroupDirective } from '@angular/forms';
+import { BaseControlDirective } from '@shared/directives/base-control.directive';
 import { InputComponent } from './input.component';
 
 describe('InputTextComponent', () => {
@@ -7,7 +9,8 @@ describe('InputTextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InputComponent],
+      imports: [InputComponent, BaseControlDirective],
+      providers: [FormGroupDirective],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InputComponent);
