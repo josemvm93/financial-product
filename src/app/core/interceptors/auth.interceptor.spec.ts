@@ -1,10 +1,27 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthInterceptor } from './auth.interceptor';
+// describe('AuthInterceptor', () => {
+//   let httpTestingController: HttpTestingController;
+//   let httpClient: HttpClient;
 
-describe('AuthInterceptor', () => {
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      providers: [AuthInterceptor],
-    })
-  );
-});
+//   beforeEach(() => {
+//     TestBed.configureTestingModule({
+//       imports: [HttpClientTestingModule],
+//       providers: [
+//         AuthInterceptor,
+//         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+//       ],
+//     });
+//     httpTestingController = TestBed.inject(HttpTestingController);
+//     httpClient = TestBed.inject(HttpClient);
+//   });
+
+//   afterEach(() => {
+//     httpTestingController.verify();
+//   });
+
+//   it('should add authorId headers ', () => {
+//     const url = '/mockendpoint';
+//     httpClient.get(url).pipe(first()).subscribe();
+//     const req = httpTestingController.expectOne(url);
+//     expect(req.request.headers.get('authorId')).toEqual('1');
+//   });
+// });

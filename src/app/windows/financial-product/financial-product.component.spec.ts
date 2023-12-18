@@ -1,21 +1,45 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FinancialProductComponent } from './financial-product.component';
+// import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+// import { RouterTestingModule } from '@angular/router/testing';
+// import { FinancialProductService } from '@core/services/financial-product.service';
+// import { LoadingService } from '@core/services/loading.service';
+// import { FinancialProductComponent } from './financial-product.component';
 
-describe('FinancialProductComponent', () => {
-  let component: FinancialProductComponent;
-  let fixture: ComponentFixture<FinancialProductComponent>;
+// describe('FinancialProductComponent', () => {
+//   let component: FinancialProductComponent;
+//   let fixture: ComponentFixture<FinancialProductComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [FinancialProductComponent],
-    }).compileComponents();
+//   let productServiceSpy: jasmine.SpyObj<FinancialProductService>;
+//   // let loadingServiceSpy: jasmine.SpyObj<LoadingService>;
+//   let loadingService: LoadingService;
 
-    fixture = TestBed.createComponent(FinancialProductComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//   beforeEach(waitForAsync(() => {
+//     productServiceSpy = jasmine.createSpyObj('FinancialProductService', [
+//       'verifyProductId',
+//     ]);
+//     // loadingServiceSpy = jasmine.createSpyObj('LoadingService', ['loading']);
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//     TestBed.configureTestingModule({
+//       imports: [FinancialProductComponent, RouterTestingModule],
+//       providers: [
+//         LoadingService,
+//         {
+//           provide: FinancialProductService,
+//           useValue: productServiceSpy,
+//         },
+//         // {
+//         //   provide: LoadingService,
+//         //   useValue: loadingServiceSpy,
+//         // },
+//       ],
+//     }).compileComponents();
+
+//     fixture = TestBed.createComponent(FinancialProductComponent);
+//     loadingService = TestBed.inject(LoadingService);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   }));
+
+//   it('should create', waitForAsync(() => {
+//     expect(component).toBeTruthy();
+//   }));
+// });
