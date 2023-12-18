@@ -5,6 +5,7 @@ import { ButtonComponent } from './button.component';
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
+  let buttonElement: HTMLButtonElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -13,6 +14,8 @@ describe('ButtonComponent', () => {
 
     fixture = TestBed.createComponent(ButtonComponent);
     component = fixture.componentInstance;
+    buttonElement = fixture.nativeElement.querySelector('button');
+
     fixture.detectChanges();
   });
 
@@ -21,7 +24,8 @@ describe('ButtonComponent', () => {
   });
 
   it('should call handleCick', () => {
-    component.handleClick();
-    expect(component.clicked).toHaveBeenCalled();
+    spyOn(component, 'handleClick').and.callThrough();
+    buttonElement.click();
+    expect(component.handleClick).toHaveBeenCalled();
   });
 });
