@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { of } from 'rxjs';
+import { first } from 'rxjs';
 import { LoadingService } from './loading.service';
 
 describe('LoadingService', () => {
@@ -18,6 +18,6 @@ describe('LoadingService', () => {
   it('should set loading value', () => {
     const value = true;
     service.loading = value;
-    expect(service.loading$).toEqual(of(value));
+    service.loading$.pipe(first()).subscribe((v) => expect(v).toBeTrue());
   });
 });
