@@ -71,7 +71,6 @@ export class BaseControlDirective
   /**
    * Write value
    *
-   * @param {*} _value Value
    */
   writeValue(_value: any) {
     // this.control.setValue(value);
