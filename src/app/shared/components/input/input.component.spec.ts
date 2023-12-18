@@ -6,6 +6,7 @@ import { InputComponent } from './input.component';
 describe('InputTextComponent', () => {
   let component: InputComponent;
   let fixture: ComponentFixture<InputComponent>;
+  let inputElement: HTMLInputElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,6 +16,8 @@ describe('InputTextComponent', () => {
 
     fixture = TestBed.createComponent(InputComponent);
     component = fixture.componentInstance;
+    inputElement = fixture.nativeElement.querySelector('input');
+
     fixture.detectChanges();
   });
 
@@ -22,7 +25,8 @@ describe('InputTextComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should emit onBlur value', () => {
-    component.onInputBlur();
-    expect(component.onBlur).toHaveBeenCalled();
+    spyOn(component, 'onInputBlur').and.callThrough();
+    inputElement.dispatchEvent(new Event('blur'));
+    expect(component.onInputBlur).toHaveBeenCalled();
   });
 });
