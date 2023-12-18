@@ -47,14 +47,16 @@ export class BaseControlDirective
   onTouched: any = () => {};
 
   ngOnInit(): void {
-    const injectedControl = this.injector.get(NgControl, null, {
+    const injectedControl = this.injector?.get(NgControl, null, {
       self: true,
       optional: true,
     });
 
-    this.control = this.injector
-      .get(FormGroupDirective)
-      .getControl(injectedControl as FormControlName);
+    if (injectedControl) {
+      this.control = this.injector
+        ?.get(FormGroupDirective)
+        ?.getControl(injectedControl as FormControlName);
+    }
   }
   /**
    * Is Required
