@@ -1,12 +1,12 @@
 <div>
   <table>
     <tr>
-      <th *ngFor="let config of config.columns; trackBy: trackById">
+      <th *ngFor="let config of config?.columns; trackBy: trackById">
         {{ config.columnName }}
       </th>
     </tr>
     <tr *ngFor="let item of data; trackBy: trackById">
-      <td *ngFor="let column of config.columns; trackBy: trackById">
+      <td *ngFor="let column of config?.columns; trackBy: trackById">
         <ng-container *ngIf="item[column.key]">
           <div [ngSwitch]="column.columnType">
             <ng-container *ngSwitchCase="'img'">
